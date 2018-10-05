@@ -15,9 +15,10 @@ public class Graphics extends JFrame implements Runnable {
 
 	private int millisSinceLastFrame[];
 	
+	private boolean debug;
 	
-
-	public Graphics() {
+	public Graphics(boolean debug) {
+		this.debug = debug;
 		millisSinceLastFrame = new int[5];
 
 		setMinimumSize(new Dimension((int) (Director.screen.getWidth() / SCALE), (int) (Director.screen.getHeight() / SCALE)));
@@ -34,6 +35,10 @@ public class Graphics extends JFrame implements Runnable {
 		//update();
 		Thread tr = new Thread(this);
 		tr.start();
+	}
+
+	public Graphics() {
+		this(false);
 	}
 	
 	public void update() {
@@ -85,7 +90,8 @@ public class Graphics extends JFrame implements Runnable {
 			add((int) (System.currentTimeMillis() - since - lastTimer));
 			if (System.currentTimeMillis() - lastTimer > 1000) {
 				lastTimer += 1000;
-				printUpdate(ticks, frames);
+				if (debug)
+					printUpdate(ticks, frames);
 				frames = 0;
 				ticks = 0;
 			}
